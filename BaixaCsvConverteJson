@@ -1,0 +1,59 @@
+import csv
+import json
+import pandas as pd
+import json
+
+# import json
+# data = json.load(open('Names.json'))
+# jtopy=json.dumps(data) #json.dumps take a dictionary as input and returns a string as output.
+# dict_json=json.loads(jtopy) # json.loads take a string as input and returns a dictionary as output.
+# # print(dict_json)
+
+# input()
+
+
+from urllib.request import urlretrieve
+import csv
+
+link = "http://www.mafmc.org/s/CT1.csv"
+delimitador = ","
+urlretrieve(link, "arquivo_baixado2.csv")
+with open("arquivo_baixado2.csv", 'r') as arquivo_csv:
+    reader = csv.reader(arquivo_csv, delimiter=delimitador)
+    for linha in reader:
+        print(linha)
+
+# Function to convert a CSV to JSON
+# Takes the file paths as arguments
+def make_json(csvFilePath, jsonFilePath):
+	
+	# create a dictionary
+	data = {}
+	
+	# Open a csv reader called DictReader
+	with open(csvFilePath, encoding='utf-8') as csvf:
+		csvReader = csv.DictReader(csvf)
+		
+		# Convert each row into a dictionary
+		# and add it to data
+		for rows in csvReader:
+			
+			# Assuming a column named 'No' to
+			# be the primary key
+			key = rows['DATE']
+			data[key] = rows
+
+	# Open a json writer, and use the json.dumps()
+	# function to dump data
+	with open(jsonFilePath, 'w', encoding='utf-8') as jsonf:
+		jsonf.write(json.dumps([data], indent=4))
+		
+# Driver Code
+
+# Decide the two file paths according to your
+# computer system
+csvFilePath = r'arquivo_baixado2.csv'
+jsonFilePath = r'Names3.json'
+
+# Call the make_json function
+make_json(csvFilePath, jsonFilePath)
